@@ -1,9 +1,3 @@
-// Compilar este arquivo para ele gerar os stubs em go.
-// Criar pasta pb que terá as stubs geradas.
-// O comando para gerar as stubs é `protoc --proto_path=proto proto/*.proto --go_out=pb --go_grpc_out=pb`
-// O comando correto para gerar as stubs é `protoc --proto_path=proto/ proto/*.proto --plugin=$(go env GOPATH)/bin/protoc-gen-go-grpc --go-grpc_out=. --go_out=.`
-// Esse arquivo vai gerar os arquivos go com as entidades e com tudo o que precisamos para manipular os protocol buffers e grpc.
-
 syntax = "proto3";
 package pb;
 option go_package = "./pb";
@@ -14,6 +8,18 @@ message User {
     string email = 3;
 }
 
+message UserResultSteam {
+    string status = 1;
+    User user = 2;
+}
+
+message Users{
+    // Significa que pode ter vários usuários aqui dentro, ou seja uma lista de Users
+    repeated User user = 1;
+}
+
 service UserService {
     rpc AddUser(User) returns (User) {}
+    rpc AddUserVerboose(User) returns (stream UserResultSteam) {}
+    rpc AddUsers(stream User) returns (Users);
 }
