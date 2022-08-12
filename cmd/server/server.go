@@ -1,8 +1,3 @@
-
-// Para criar os servicos basta olhar os types que estão mapeados dentro do user_grpc.pb.go;
-// São eles: UserServiceClient e UserServiceServer que são as interfaces que precisam ser implementados.
-// Para isso, crio uma pasta de services e crio os servicos dentro de cada arquivo.
-
 package main
 
 import (
