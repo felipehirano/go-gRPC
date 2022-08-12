@@ -1,0 +1,5 @@
+Comunicacao Sincrona x Assincrona:
+
+- Sincrona : Acontece em tempo real, envia uma request e recebe uma response;
+- Assincrona (mais adequada para se trabalhar com microservicos):  Não precisa ter a resposta na hora
+(Ex: Enviar carta pelo correios, que irá entregar a carta para o destinatario, garantindo a entrega);

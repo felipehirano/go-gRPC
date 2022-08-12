@@ -1,0 +1,129 @@
+Rest:
+    - Representational state of transfer;
+    - Simplicidade;
+    - Stateless(A cada transacao temos que estar autenticado, passando sempre um token válido, pois o servidor
+    não é obrigado a saber que o Felipe é o Felipe. Cada transacão é independente, não há sessão que saberá
+    que você é quem esta realizando a transacao);
+    - Cacheável;
+
+Níveis de maturidade( Richardson Maturity Model):
+    - Nível 0 -> Tudo o que tráfega via http irá realizar uma transacao (banco de dados), porém sem padronizacao;
+    - Nível 1 -> Utilizacao de resources:
+        GET     /products/1     Buscar
+        POST    /products       Inserir
+        PUT     /products/1     Alterar
+        DELETE  /products/1     Remover
+    - Nível 2 -> Verbos HTTP:
+        GET     Recuperar informacao
+        POST    Inserir
+        PUT     Alterar 
+        DELETE  Remover
+    - Nível 3 -> HATEOAS: Hypermedia as the engine of application state:
+        - Sempre irá responder o seu endpoint, trazendo sempre o que você poderá fazer;
+            Ex: 
+                {
+                    account: {
+                        account_number: 12345
+                    },
+                    links: {
+                        deposit: "/accounts/12345/deposit",
+                        withdraw: "/accounts/12345/withdraw",
+                        transfer: "/accounts/12345/transfer",
+                        close: "/accounts/12345/close",
+                    }
+                }
+            - Ou seja, essa lista de links informa a quem resitou o que você poderá fazer com esse recurso de conta,
+            nesse caso, você pode fazer um deposito, fazer um saque, transferir ou fechar a conta.
+        - Torna a API auto-explicável;
+
+    - REST: Uma boa API REST (Está ligado aos níveis de maturidade):
+
+        - Utilizar URIs únicas para servicos e itens que expostos para esses servicos ( Padronizacao );
+        - Utilizar todos os verbos HTTP para realizar as operacoes em seus recursos, incluindo caching;
+        - Prove links relacionais para os recursos exemplificando o que pode ser feito (Nível de maturidade 3);
+
+    - REST: HAL, Collection + JSON e Siren(Padroes para fazer uma API decente):
+        - Antigamente era utilizado o XML (Muito bom para estruturar um documento e adicionar
+        atributos a esse documento, o que facilitava a documentacao) ao inves do JSON (Não existe
+        nenhuma padronizacao/formato para entregar esses dados, necessário uma documentacao muito boa
+        para trabalhar com ela);
+        
+        - JSON nao prove um padrao de hipermidia para realizar a linkagem;
+        - Hal: Hypermedia Application Language;
+        - Siren;
+        
+        Ex: Media type = application/hal+json :
+
+            {
+                _links: {
+                    self: {
+                        href: "http://fullcycle.com.br/api/user/felipe"
+                    }
+                },
+                name: "Felipe Ken",
+                id: 1,
+                _embedded: {
+                    family: {
+                        _links: {
+                            self: {
+                                href: "http://fullcycle.com.br/api/user/thiago"
+                            }
+                        }
+                    }
+                }
+            }
+
+            - Traz os dados necessários, além de trazer o _links indicando o atual link que está sendo acessado, 
+            esse padrão traz também o atributo embedded que irá trazer a ligacao de relacionamento que ele possui 
+            com outras collections, nesse caso é a family, informando também os links para acessar os items relacionados. 
+    
+    - HTTP Method Negotiation:
+
+        - HTTP possui um outro método: OPTION. Esse método nos permite informar quais métodos são
+        permitidos ou não em determinado recurso;
+            Ex: 
+            
+                Request : OPTIONS /api/product HTTP/1.1
+                Response : Allow: Get, Post
+
+                Caso envie a requisicao em outro formato(PUT):
+                    HTTP/1.1 405 Not Allowed
+                    Allow: GET, POST
+
+    - HTTP Content Negotiation: 
+
+        - O processo de content negotiation é baseado na requisicao que o client está fazendo para o server.
+        Nesse caso ele solicita o que e como ele quer a resposta. O server entao retornara ou nao a informacao no
+        formato desejado.
+
+            Ex: Client solicita a informacao e o tipo de retorno pelo server baseado no media type informando
+            por ordem de prioridade.
+
+            GET /product
+            Accept: application/json
+
+            Resposta pode ser o retorno dos dados ou :
+
+            HTTP/1.1 406 Not Acceptable ( Não trabalha no formato que o client enviou);
+    
+    - Content-Type Negotiation:
+
+        - Atraves de um content-type no header da request, o servidor consegue verificar se ele irá conseguir
+        processar a informacao para retornar a informacao desejada;
+
+        Ex: 
+        
+        POST /product HTTP/1.1
+        Accept: application/json
+        Content-Type: application/json
+
+        {
+            name: "Product 1"
+        }
+
+        Caso o servidor não aceite o content type, ele pode retornar: 
+        
+        HTTP/1.1 415 Unsupported Media Type (O servidor não consegue processar esse content type que foi enviado no cabecalho
+        da requisicao, ou seja, o Accept é o tipo de resposta que queremos e o content-type é o formato que estamos enviando na
+        requisicao);
+

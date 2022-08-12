@@ -1,0 +1,140 @@
+gRPC: 
+
+- É um framework desenvolvido pela google que tem o objetivo facilitar o processo de comunicacao
+entre sistemas de uma forma extremamente rapida, leve e independente de linguagem;
+
+- Ideal para microservicos;
+
+- Mobile, Browsers e Backend;
+
+- Geracao das bibliotecas de forma automatica;
+
+- Streaming bidirecional utilizando HTTP/2;
+
+Linguagens (Suporte oficial)
+
+- gRPC-GO 
+- gRPC-JAVA
+- gRPC-C
+    - C++
+    - Pyhton
+    - Ruby
+    - Objective C
+    - PHP
+    - C#
+    - Node.js
+    - Dart
+    - Kotlin /JVM
+
+RPC - Remote Procedure Call
+
+    Client                  Server
+                    ->
+    server.soma(a,b)        func soma(int,a int b){}
+
+Protocol Buffers
+
+- É uma linguagem neutra, plataforma neutra, extensível e possui uma forma de construir uma 
+estrutura de dados e serializa-la;
+
+Protocol Buffers x JSON
+
+- Arquivos binários(Protocol buffers) < JSON;
+- Processo de serializacao é mais leve (CPU) do que JSON;
+- Gasta menos recursos de rede;
+- Processo é mais veloz;
+
+    Ex arquivo de protocol buffers(.proto):
+
+        syntax = "proto3";
+
+        message SearchRequest {
+            string query = 1;
+            int32 page_number = 2;
+            int32 result_per_page = 3;
+        }
+
+HTTP/2:
+
+- Nome original era SPDY;
+- Lancado em 2015;
+- Dados tragegados são binarios e não texto como no HTTP 1.1;
+- Utiliza a mesma conexão TCP para enviar e receber dados do cliente e do servidor (Multiplex);
+- Server push; 
+- Headers são comprimidos;
+- Processo é mais veloz;
+
+
+gRPC - API "unary":
+ 
+        Request
+Client  -------->    Server
+        <--------
+        Response
+
+-> Esse é o tradicional, envia-se uma requisicao, o servidor processa e logo após o processo ele retorna a resposta;
+
+gRPC - API "Server streaming":
+
+- Envia-se uma request e vai retornando as respostas sem necessariamente finalizar todo o processamento,  retornando assim,
+várias respostas com um passo-a-passo do processamento;
+
+        Request
+Client  -------->    Server
+        <--------
+        <--------
+        <--------
+        <--------
+        Response
+
+gRPC - API "Client streaming":
+
+- Envia-se requests aos poucos, até que chega uma hora que o server irá devolver uma resposta;
+
+        Request
+Client  -------->    Server
+        -------->
+        -------->
+        -------->
+        <--------
+        Response
+
+gRPC - API "Bi directional streaming":
+
+- Envia-se requests aos poucos e devolve as responses aos poucos;
+
+        Request
+Client  -------->    Server
+        -------->
+        -------->
+        <--------
+        <--------
+        <--------
+        Response
+
+REST x gRPC:
+
+Rest:
+
+- Texto / JSON;
+- Unidirecional;
+- Alta latência;
+- Sem contrato (maior chance de erros);
+- Sem suporte a streaming (REquest / Response);
+- Design pré-definido;
+- Bibliotecas de terceiro;
+
+gRPC:
+
+- Protocol Buffers;
+- Bidirecional e assínctono;
+- Baixa latência;
+- Contrato definido (.proto);
+- Suporte a streaming;
+- Design é livre;
+- Geracao de código;
+
+Site do framework:
+
+grpc.io
+developers.google.com/protocol-buffers
