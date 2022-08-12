@@ -1,4 +1,4 @@
-## Projeto com o intuito de estudo sobre gRPC utilizando golang
+## Projeto com o objetivo de estudar gRPC utilizando golang
 
 ### Protocol buffers
 
